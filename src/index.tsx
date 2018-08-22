@@ -1,11 +1,26 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import App from './App';
-import './index.css';
-import registerServiceWorker from './registerServiceWorker';
+import { AppModel } from './model/AppModel';
+import { App } from './components/App/App';
+import { observe } from 'mobx';
+import { debounce } from 'lodash';
+import { LOCALSTORAGE_SAVE_KEY } from './config';
 
-ReactDOM.render(
-  <App />,
-  document.getElementById('root') as HTMLElement
-);
-registerServiceWorker();
+const appModel = new AppModel();
+
+ReactDOM.render(<App {...{ appModel }} />, document.getElementById(
+    'root',
+) as HTMLElement);
+
+observe(appModel.messages,debounce(()=>{
+  
+
+  localStorage.setItem(LOCALSTORAGE_SAVE_KEY,JSON.stringify(appModel.serialize()));
+  console.log('saved to localstorage');
+
+},500));
+
+
+
+appModel.newMessage();
+appModel.newMessage();
