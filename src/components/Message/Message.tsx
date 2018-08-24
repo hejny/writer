@@ -1,4 +1,4 @@
-import './Message.css';
+import './Message.scss';
 import * as React from 'react';
 import { observer } from 'mobx-react';
 import { IMessage } from '../../model/IMessage';
@@ -12,11 +12,11 @@ export const Message = observer(({ message }: IMessageProps) => {
         <div className="Message">
             <textarea defaultValue={message.text} onChange={(event)=>message.text=event.target.value} />
 
-            <ul className="statistics">
+            {/*todo <ul className="statistics">
                 <li>{message.text.length} chars</li>
                 <li>{message.text.length} words</li>
                 <li>{message.text.length} sentences</li>
-            </ul>
+            </ul>*/}
         </div>
     );
 });

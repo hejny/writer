@@ -1,4 +1,17 @@
 .App{
 
-    
+
 }
+
+
+.Message{
+    margin: 50px;
+}
+textarea{
+    width: 50%;
+    height: 450px;
+    border: 2px solid #cccccc;
+    font-size: 1.5em;
+
+} 
+
