@@ -1,3 +1,5 @@
+import * as uuidv4 from 'uuid/v4';
+
 export interface IMessage{
     uuid: string;
     status: 'CURRENT'|'CLEARED'|'FEATURE';
@@ -13,11 +15,10 @@ export interface IMessage{
     }[];
 }
 
-
 export function createDefaultMessage():IMessage{
     
     return({
-        uuid: Math.random().toString(),//todo UUID v4
+        uuid: uuidv4(),//Math.random().toString(),//todo UUID v4
         status: 'CURRENT',
         texts: [
             {
