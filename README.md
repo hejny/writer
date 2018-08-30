@@ -1,5 +1,10 @@
 # Simple writer
 
+Simple batch writer for messages on all platforms.
+
+## Usage
+https://github.com/hejny/writer
+
 
 
 ## Develop
