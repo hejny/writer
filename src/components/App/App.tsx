@@ -15,7 +15,7 @@ export const App = observer(({ appModel, save, download }: IAppProps) => {
     return (
         <div className="App">
             <Toolbar {...{ appModel, save, download }} />
-            {appModel.messages
+            {[...appModel.messages]
                 .sort((message1, message2) => {
                     if (
                         message1.status === 'CURRENT' &&
@@ -33,7 +33,7 @@ export const App = observer(({ appModel, save, download }: IAppProps) => {
                 })
                 .map((message) => (
                     <React.Fragment key={message.uuid}>
-                        <Message {...{ message }} remove={()=>appModel.messages = appModel.messages.filter((message2)=>message2!==message)} />
+                        <Message {...{ message }} remove={()=>{if(confirm(`Do you really want to remove whole message?`))appModel.messages = appModel.messages.filter((message2)=>message2!==message)}} />
                     </React.Fragment>
                 ))}
         </div>

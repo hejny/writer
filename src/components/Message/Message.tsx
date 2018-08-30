@@ -47,17 +47,19 @@ export const Message = observer(({ message, remove }: IMessageProps) => {
                     {message.to.map((toItem) => (
                         <li key={toItem.uuid}>
                             <input
+                                spellCheck={false}
                                 defaultValue={toItem.name}
                                 onChange={(event) =>
                                     (toItem.name = event.target.value)
                                 }
                             />
                             <button
-                                onClick={() =>
+                                onClick={() =>{
+                                    if(confirm(`Do you really want to remove ${toItem.name}?`))
                                     (message.to = message.to.filter(
                                         (toItem2) => toItem2 !== toItem,
                                     ))
-                                }
+                                }}
                             >
                                 Remove
                             </button>
@@ -113,11 +115,12 @@ export const Message = observer(({ message, remove }: IMessageProps) => {
                             </select>
 
                             <button
-                                onClick={() =>
+                                onClick={() =>{
+                                    if(confirm(`Do you really want to remove text ${text.name}?`)){
                                     (message.texts = message.texts.filter(
                                         (text2) => text2 !== text,
                                     ))
-                                }
+                                }}}
                             >
                                 Remove
                             </button>
@@ -125,6 +128,8 @@ export const Message = observer(({ message, remove }: IMessageProps) => {
 
                         <textarea
                             defaultValue={text.content}
+                            spellCheck={true}
+                            lang={text.language}
                             onChange={(event) =>
                                 (text.content = event.target.value)
                             }

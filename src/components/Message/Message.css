@@ -1,13 +1,11 @@
 /*todo scss*/
 
 .Message{
-    display: inline-block;
-    vertical-align: top;
+    display: block;
     margin: 50px;
     padding: 30px;
     box-shadow: rgba(0, 0, 0, 0.6) 0 0 10px;
     background-color: whitesmoke;
-    width: 40%;
     text-align: left;
 }
 textarea{
