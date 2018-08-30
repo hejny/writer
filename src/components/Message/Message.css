@@ -8,6 +8,12 @@
     background-color: whitesmoke;
     text-align: left;
 }
+
+.Message.FINISHED{
+    opacity: 0.5;
+}
+
+
 textarea{
     width: 100%;
     height: 250px;

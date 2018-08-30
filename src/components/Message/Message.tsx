@@ -20,7 +20,7 @@ interface IMessageProps {
 
 export const Message = observer(({ message, remove }: IMessageProps) => {
     return (
-        <div className="Message">
+        <div className={`Message ${message.status}`}>
             <div className="status">
                 <select
                     value={message.status}
