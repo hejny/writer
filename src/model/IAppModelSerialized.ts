@@ -1,5 +1,5 @@
-import { IMessage } from "./IMessage";
+import { IMessage } from './IMessage';
 
-export interface IAppModelSerialized{
+export interface IAppModelSerialized {
     messages: IMessage[];
 }

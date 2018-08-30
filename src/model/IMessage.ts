@@ -1,33 +1,102 @@
 import * as uuidv4 from 'uuid/v4';
 
-export interface IMessage{
-    uuid: string;
-    status: 'CURRENT'|'CLEARED'|'FEATURE';
-    texts: {
-        name: string;
-        format: 'plain'|'html'|'markdown';//todo currently implemented only for plain text
-        language: string;//todo maybe string enum
-        content: string;
-    }[];
+//todo split into more files
 
-    to: {
-        name: string;
-    }[];
+export type MessageStatus = 'CURRENT' | 'FINISHED' | 'FEATURE';
+export type MessageTextFormat = 'plain' | 'html' | 'markdown'; //todo currently implemented only for plain text
+export type MessageTextLanguage = 'en' | 'cs'; //todo currently implemented only for en and cs
+
+//todo split into more files
+export const MessageStatusDictionary: {
+    value: MessageStatus;
+    name: string;
+}[] = [
+    {
+        value: 'CURRENT',
+        name: 'Current',
+    },
+    {
+        value: 'FINISHED',
+        name: 'Finished',
+    },
+    {
+        value: 'FEATURE',
+        name: 'In feature',
+    },
+];
+
+//todo split into more files
+export const MessageTextFormatDictionary: {
+    value: MessageTextFormat;
+    name: string;
+}[] = [
+    {
+        value: 'plain',
+        name: 'Text',
+    },
+];
+
+//todo split into more files
+export const MessageTextLanguageDictionary: {
+    value: MessageTextLanguage;
+    name: string;
+}[] = [
+    {
+        value: 'en',
+        name: 'English',
+    },
+    {
+        value: 'cs',
+        name: 'Čeština',
+    },
+];
+
+export interface IMessageToItem {
+    uuid: string;
+    name: string;
 }
 
-export function createDefaultMessage():IMessage{
-    
-    return({
-        uuid: uuidv4(),//Math.random().toString(),//todo UUID v4
+export interface IMessageText {
+    uuid: string;
+    name: string;
+    format: MessageTextFormat;
+    language: MessageTextLanguage; //todo maybe string enum
+    content: string;
+}
+
+export interface IMessage {
+    uuid: string;
+    status: MessageStatus;
+    texts: IMessageText[];
+
+    to: IMessageToItem[];
+}
+
+export function createDefaultMessage(): IMessage {
+    return {
+        uuid: uuidv4(),
         status: 'CURRENT',
         texts: [
-            {
-                name: 'MAIN',
-                format: 'plain',
-                language: 'en',
-                content: ''
-            }
+            createDefaultMessageText('Task'),
+            createDefaultMessageText('Message'),
         ],
-        to: [],
-    });
+        to: [createDefaultToItem()],
+    };
+}
+
+export function createDefaultMessageText(name = ''): IMessageText {
+    return {
+        uuid: uuidv4(),
+        name,
+        format: 'plain',
+        language: 'en',
+        content: '',
+    };
+}
+
+export function createDefaultToItem(): IMessageToItem {
+    return {
+        uuid: uuidv4(),
+        name: '',
+    };
 }
