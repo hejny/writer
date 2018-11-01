@@ -2,8 +2,7 @@ import { IAppState } from './IAppState';
 
 export function createDefaultAppState(): IAppState {
     return {
-        message: 
-`
+        message: `
 
 Welcome to 🖋 Simple writer!
 
