@@ -1,1 +1,1 @@
-export const LOCALSTORAGE_SAVE_KEY = 'app_1234_storage';
+export const LOCALSTORAGE_SAVE_KEY = 'writer_app_storage';

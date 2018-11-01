@@ -2,6 +2,15 @@ import { IAppState } from './IAppState';
 
 export function createDefaultAppState(): IAppState {
     return {
-        message: 'Hello World!',
+        message: 
+`
+
+Welcome to 🖋 Simple writer!
+
+---
+
+It is just <textarea> saved to LocalStorage.
+
+`,
     };
 }

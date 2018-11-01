@@ -1,8 +1,9 @@
-body{
-    background-color: #cccccc2a
+body, html{
+    font-family: 'Roboto', sans-serif;
+    overflow-x: hidden;
 }
 
 
 .Root{
-    text-align: center;
+
 }

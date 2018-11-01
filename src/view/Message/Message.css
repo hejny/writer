@@ -1,10 +1,49 @@
 /*todo scss*/
 
+.Message{
+}
+
 .Message textarea{
-    width: 100%;
-    height: 250px;
-    border: 2px solid #cccccc;
-    font-size: 1.5em;
+    position: absolute;
+    z-index: 10;
+    top:0;
+    left:20px;
+    width: calc(100vw - 70px);
+    min-height: 100vh;
+    font-size: 1.5rem;
+    border:none;
+    
 
 } 
 
+
+.Message .rows{
+    position: absolute;
+    z-index: 20;
+    top:0;
+    left:0;
+    width: 70px;
+    /*background-color: rgb(226, 226, 226);*/
+    color: rgb(115, 186, 228);
+    font-size: 1.5rem;
+    text-align: right;
+    padding-bottom: 20px;
+    user-select: none;
+    pointer-events: none;
+}
+
+.Message .row{
+    width: 40px;
+}
+
+.Message .row.separator{
+    width: 100vw;
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.Message .row.separator div{
+    display: inline-block;
+    color: rgba(0, 0, 0, 0.5);
+    font-size: 1rem;
+    padding-right: 30px;
+}
