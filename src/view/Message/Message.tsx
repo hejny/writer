@@ -44,13 +44,15 @@ export const Message = observer(({ appState }: IMessageProps) => {
         <div className="Message">
             <div className="rows">
                 {messagesLines
-                    .map((lines) => lines.join('\n'))
+                    .map((lines) => lines.map((line) => line || ' ').join('\n'))
                     .map((text, i) => (
                         <div
                             className="row"
                             key={i}
                             style={{
-                                height: (text.split('\n').length + 1) * 30,
+                                height:
+                                    (!text ? 1 : text.split('\n').length + 1) *
+                                    30,
                             }}
                         >
                             <div className="infobox">
