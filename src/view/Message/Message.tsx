@@ -3,6 +3,7 @@ import * as React from 'react';
 import { observer } from 'mobx-react';
 import { IAppState } from '../../model/IAppState';
 import { IObservableObject } from 'mobx';
+import { copyToClipboard } from 'src/tools/copyToClipboard';
 
 interface IMessageProps {
     appState: IAppState & IObservableObject;
@@ -56,10 +57,16 @@ export const Message = observer(({ appState }: IMessageProps) => {
                             }}
                         >
                             <div className="infobox">
-                                &nbsp;
                                 <div>
                                     {text.trim().length} chars{' '}
                                     {text.trim().split(' ').length} words
+                                    <button
+                                        onClick={() =>
+                                            copyToClipboard(text.trim())
+                                        }
+                                    >
+                                        📋
+                                    </button>
                                 </div>
                             </div>
                         </div>

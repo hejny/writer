@@ -50,5 +50,21 @@
     display: inline-block;
     color: rgba(0, 0, 0, 0.5);
     font-size: 1rem;
-    padding-right: 30px;
+    padding-right: 10px;
+}
+
+.Message .row .infobox button{
+    pointer-events: all;
+    margin-right: 10px;
+    margin-left: 10px;
+    padding: 2px;
+    background-color: rgba(0,0,0,0.1);
+    border: none;
+}
+.Message .row .infobox button:hover{
+    background-color: rgba(0,0,0,0.2);
+}
+
+.Message .row .infobox button::-moz-focus-inner{
+    border: 0;
 }
