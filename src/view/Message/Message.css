@@ -21,7 +21,7 @@
 .Message .rows{
     position: absolute;
     z-index: 20;
-    top:-5px;
+    top:-7px;
     left:0;
     width: 70px;
     /*background-color: rgb(226, 226, 226);*/

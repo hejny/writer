@@ -9,72 +9,69 @@ interface IMessageProps {
     appState: IAppState & IObservableObject;
 }
 
+interface IMessage {
+    text: string;
+    stat: {
+        chars: number;
+        lines: number;
+        words: number;
+    };
+}
+
+//todo better name the compont, because Message is only a chunk not a whole text
 export const Message = observer(({ appState }: IMessageProps) => {
-    //todo better naming message vs. text vs. row
-    const textLines = appState.message.split('\n').reduce(
-        (rows, row) => {
-            const charsOnRow = Math.floor(window.innerWidth / 15);
+    //todo to some helper file,
+    //todo refresh on window resize
+    const charsOnRow = Math.floor(window.innerWidth / 15);
 
-            const row_lines = row.match(
-                new RegExp(`.{1,${charsOnRow}}`, 'g'),
-            ) || [''];
-            //console.log(row,row_lines);
-            for (const row of row_lines) {
-                rows.push(row);
-            }
-            return rows;
-        },
-        [] as string[],
-    );
-
-    let messagesLinesCurrentRef: string[] = [];
-    const messagesLines: string[][] = [messagesLinesCurrentRef];
-
-    for (const line of textLines) {
-        if (/^(\-|\=){2,}/g.test(line)) {
-            messagesLinesCurrentRef = [];
-            messagesLines.push(messagesLinesCurrentRef);
-        } else {
-            messagesLinesCurrentRef.push(line);
-        }
-    }
+    const messages: IMessage[] = appState.message
+        .split(/^(\-|\=){2,}.*$/gm)
+        .filter((text) => !/^(\-|\=)/.test(text)) //todo DRY
+        .map((text) => {
+            return {
+                text,
+                stat: {
+                    chars: text.trim().length,
+                    lines: text.split(new RegExp(`.{0,${charsOnRow}}`, 'gm'))
+                        .length,
+                    words: text.trim().split(' ').length,
+                },
+            };
+        });
 
     //todo better stats
     //todo stats in separate function
     return (
         <div className="Message">
             <div className="rows">
-                {messagesLines
-                    .map((lines) => lines.map((line) => line || ' ').join('\n'))
-                    .map((text, i) => (
-                        <div
-                            className="row"
-                            key={i}
-                            style={{
-                                height:
-                                    (!text ? 1 : text.split('\n').length + 1) *
-                                    30,
-                            }}
-                        >
-                            <div className="infobox">
-                                <div>
-                                    {text.trim().length} chars{' '}
-                                    {text.trim().split(' ').length} words
-                                    <button
-                                        onClick={() =>
-                                            copyToClipboard(text.trim())
-                                        }
-                                    >
-                                        📋
-                                    </button>
-                                </div>
+                {messages.map((message, i) => (
+                    <div
+                        className="row"
+                        key={i}
+                        style={{
+                            height:
+                                (message.stat.lines + (i === 0 ? 1 : 0)) * 30,
+                        }}
+                    >
+                        <div className="infobox">
+                            <div>
+                                {message.stat.chars} chars {message.stat.words}{' '}
+                                words
+                                <button
+                                    onClick={() =>
+                                        copyToClipboard(message.text.trim())
+                                    }
+                                >
+                                    📋
+                                </button>
                             </div>
                         </div>
-                    ))}
+                    </div>
+                ))}
             </div>
 
             <textarea
-                rows={textLines.length + 5}
+                rows={messages.reduce((agg, m) => m.stat.lines + agg, 0) + 5}
                 defaultValue={appState.message}
                 onChange={(event) => (appState.message = event.target.value)}
             />
