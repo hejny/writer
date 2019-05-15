@@ -24,6 +24,7 @@ export const Message = observer(({ appState }: IMessageProps) => {
     //todo refresh on window resize
     const charsOnRow = Math.floor(window.innerWidth / 15);
 
+    //todo even better splitting by whole
     const messages: IMessage[] = appState.message
         .split(/^(\-|\=){2,}.*$/gm)
         .filter((text) => !/^(\-|\=)/.test(text)) //todo DRY
@@ -64,6 +65,19 @@ export const Message = observer(({ appState }: IMessageProps) => {
                                 >
                                     📋
                                 </button>
+                                {/*
+                                <button
+                                    onClick={() =>{
+                                        
+                                        copyToClipboard(message.text.trim())
+                                        
+                                        appState.message
+
+                                    }}
+                                >
+                                    ✂️
+                                </button>
+                                */}
                             </div>
                         </div>
                     </div>
