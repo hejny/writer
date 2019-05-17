@@ -16,6 +16,9 @@
     resize: none;
 
 } 
+.Message textarea:focus {
+    outline-width: 0;
+}
 
 .measureContentHeight{
     width: calc(100vw - 70px);
