@@ -3,19 +3,19 @@
    "autokill":true,
    "terminals":[
       {
-         "name":"npm start",
-         "description":"React scripts",
-         "icon":"code",
-         "cwd":".",
+         "name":"working environment",
          "open": true,
+         "commands":[
+            "firefox",
+            "nautilus ."
+         ]
+      },
+      {
+         "name":"npm start",
          "command":"npm start"
       },
       {
          "name":"prettier-watch",
-         "description":"Prettier",
-         "icon":"code",
-         "cwd":".",
-         "open": true,
          "command":"npm run prettier-watch"
       }
    ]
