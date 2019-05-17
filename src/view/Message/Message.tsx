@@ -36,7 +36,10 @@ export const Message = observer(({ appState }: IMessageProps) => {
                     chars: text.trim().length,
                     lines: text.split(new RegExp(`.{0,${charsOnRow}}`, 'gm'))
                         .length,
-                    words: text.trim().split(' ').length,
+                    words: text
+                        .trim()
+                        .split(' ')
+                        .filter((w) => w !== '').length,
                 },
             };
         });
