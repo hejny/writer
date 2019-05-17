@@ -9,7 +9,7 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
     "deploy-from-cache": "gh-pages -d build",
-    "prettier": "prettier --config .prettierrc --write \"src/**/*.{ts,tsx,js}\" webpack.config.js",
+    "prettier": "prettier --config .prettierrc --write \"{src,scripts}/**/*.{ts,tsx,js}\" webpack.config.js",
     "prettier-watch": "onchange \"**/*.{js,ts,tsx,json}\" -- npm run prettier"
   },
   "dependencies": {
@@ -32,6 +32,7 @@
     "@types/react-dom": "^16.0.7",
     "gh-pages": "^1.1.0",
     "prettier": "^1.12.1",
+    "onchange": "^4.1.0",
     "typescript": "^3.0.1"
   }
 }
