@@ -4,6 +4,7 @@ import { observer } from 'mobx-react';
 import { IAppState } from '../../model/IAppState';
 import { IObservableObject } from 'mobx';
 import { copyToClipboard } from 'src/tools/copyToClipboard';
+import { measureContentHeight } from 'src/tools/measureContentHeight';
 
 interface IMessageProps {
     appState: IAppState & IObservableObject;
@@ -24,7 +25,7 @@ export const Message = observer(({ appState }: IMessageProps) => {
     //todo refresh on window resize
     const charsOnRow = Math.floor(window.innerWidth / 15);
 
-    //todo even better splitting by whole
+    //todo #1 even better splitting by whole
     const messages: IMessage[] = appState.message
         .split(/^(\-|\=){2,}.*$/gm)
         .filter((text) => !/^(\-|\=)/.test(text)) //todo DRY
@@ -49,10 +50,7 @@ export const Message = observer(({ appState }: IMessageProps) => {
                     <div
                         className="row"
                         key={i}
-                        style={{
-                            height:
-                                (message.stat.lines + (i === 0 ? 1 : 0)) * 30,
-                        }}
+                        style={{ height: measureContentHeight(message.text) }}
                     >
                         <div className="infobox">
                             <div>
@@ -66,6 +64,7 @@ export const Message = observer(({ appState }: IMessageProps) => {
                                     📋
                                 </button>
                                 {/*
+                                todo cut button (need to do #1 first)
                                 <button
                                     onClick={() =>{
                                         
@@ -85,6 +84,7 @@ export const Message = observer(({ appState }: IMessageProps) => {
             </div>
 
             <textarea
+                id="writing-area"
                 rows={messages.reduce((agg, m) => m.stat.lines + agg, 0) + 5}
                 defaultValue={appState.message}
                 onChange={(event) => (appState.message = event.target.value)}

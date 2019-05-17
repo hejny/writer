@@ -17,6 +17,11 @@
 
 } 
 
+.measureContentHeight{
+    width: calc(100vw - 70px);
+    font-size: 24.75px;
+    white-space: pre-wrap; 
+} 
 
 .Message .rows{
     position: absolute;
@@ -37,7 +42,11 @@
     width: 100vw;
     display: flex;
     align-content: end;
-    margin-bottom: 3px;
+    margin-bottom: 0px;
+}
+
+.Message .row:first-child{
+    margin-bottom: 35px;
 }
 
 .Message .row .infobox{
