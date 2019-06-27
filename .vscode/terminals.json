@@ -1,15 +1,6 @@
 {
-   "autorun":true,
    "autokill":true,
    "terminals":[
-      {
-         "name":"working environment",
-         "open": true,
-         "commands":[
-            "firefox",
-            "nautilus ."
-         ]
-      },
       {
          "name":"npm start",
          "command":"npm start"
