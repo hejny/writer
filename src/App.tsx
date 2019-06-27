@@ -1,5 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import * as firebase from 'firebase';
 import { IAppState } from './model/IAppState';
 import { ISaveState } from './controller/saver/ISaveState';
 import { IObservableObject } from 'mobx';
@@ -8,6 +9,8 @@ import { saveAppStateAfterChange } from './controller/saver/saveAppStateAfterCha
 import { Root } from './view/Root/Root';
 
 export class App {
+    private firebaseApp: firebase.app.App;
+
     constructor(private rootElement: HTMLDivElement) {}
 
     public appState: IAppState & IObservableObject;
@@ -22,5 +25,14 @@ export class App {
             />,
             this.rootElement,
         );
+
+        this.firebaseApp = firebase.initializeApp({
+            apiKey: '<your-api-key>',
+            authDomain: '<your-auth-domain>',
+            databaseURL: '<your-database-url>',
+            projectId: '<your-cloud-firestore-project>',
+            storageBucket: '<your-storage-bucket>',
+            messagingSenderId: '<your-sender-id>',
+        });
     }
 }

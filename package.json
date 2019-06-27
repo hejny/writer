@@ -17,6 +17,7 @@
     "@types/lodash": "^4.14.116",
     "@types/uuid": "^3.4.3",
     "downloadjs": "^1.4.7",
+    "firebase": "^6.2.3",
     "lodash": "^4.17.10",
     "mobx": "^5.0.4",
     "mobx-react": "^5.2.5",
