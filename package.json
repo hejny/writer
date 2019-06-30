@@ -10,7 +10,10 @@
     "deploy": "gh-pages -d build",
     "deploy-from-cache": "gh-pages -d build",
     "prettier": "prettier --config .prettierrc --write \"{src,scripts}/**/*.{ts,tsx,js}\" webpack.config.js",
-    "prettier-watch": "onchange \"**/*.{js,ts,tsx,json}\" -- npm run prettier"
+    "prettier-watch": "onchange \"{src,scripts}/**/*.{ts,tsx,js}\" -- prettier --config .prettierrc --write {{changed}}"
+  
+
+
   },
   "dependencies": {
     "@types/downloadjs": "^1.4.0",
