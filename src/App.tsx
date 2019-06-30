@@ -1,12 +1,12 @@
+import * as firebase from 'firebase/app';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import * as firebase from 'firebase';
 import { IAppState } from './model/IAppState';
-import { ISaveState } from './controller/saver/ISaveState';
 import { IObservableObject } from 'mobx';
+import { ISaveState } from './controller/saver/ISaveState';
 import { restoreAppState } from './controller/saver/restoreAppState';
-import { saveAppStateAfterChange } from './controller/saver/saveAppStateAfterChange';
 import { Root } from './view/Root/Root';
+import { saveAppStateAfterChange } from './controller/saver/saveAppStateAfterChange';
 
 export class App {
     private firebaseApp: firebase.app.App;
@@ -27,12 +27,22 @@ export class App {
         );
 
         this.firebaseApp = firebase.initializeApp({
-            apiKey: '<your-api-key>',
-            authDomain: '<your-auth-domain>',
-            databaseURL: '<your-database-url>',
-            projectId: '<your-cloud-firestore-project>',
-            storageBucket: '<your-storage-bucket>',
-            messagingSenderId: '<your-sender-id>',
+            apiKey: 'AIzaSyB1UIYHsv3sl4pC8fPbkVghqBmfWdWwYDI',
+            //authDomain: '<your-auth-domain>',
+            databaseURL: 'https://writer-42b9d.firebaseio.com/',
+            projectId: 'writer-42b9d',
+            //storageBucket: '<your-storage-bucket>',
+            //messagingSenderId: '<your-sender-id>',
+        });
+
+        const database = this.firebaseApp.database();
+
+        database.ref('documents/test').set({
+            text: 'test',
+        });
+
+        database.ref('documents/test').on('value', (event) => {
+            console.log(event);
         });
     }
 }
