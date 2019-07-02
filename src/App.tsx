@@ -1,31 +1,40 @@
 import * as firebase from 'firebase/app';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import { createDefaultAppState } from './model/createDefaultAppState';
 import { IAppState } from './model/IAppState';
-import { IObservableObject } from 'mobx';
-import { ISaveState } from './controller/saver/ISaveState';
-import { restoreAppState } from './controller/saver/restoreAppState';
+import { ISaver } from './controller/saver/00-ISaver';
+import { LOCALSTORAGE_SAVE_KEY } from './config';
+import { LocalStorageSaver } from './controller/saver/LocalStorageSaver';
 import { Root } from './view/Root/Root';
-import { saveAppStateAfterChange } from './controller/saver/saveAppStateAfterChange';
+import 'firebase/database';
 
 export class App {
+    private saver: ISaver<IAppState>;
     private firebaseApp: firebase.app.App;
 
     constructor(private rootElement: HTMLDivElement) {}
 
-    public appState: IAppState & IObservableObject;
-    public saveState: ISaveState & IObservableObject;
-    run() {
-        this.appState = restoreAppState();
-        this.saveState = saveAppStateAfterChange(this.appState);
+    async run() {
+        this.saver = new LocalStorageSaver(
+            LOCALSTORAGE_SAVE_KEY,
+            createDefaultAppState,
+        );
+        //TODO: Show the saving bar
+
+        const appState = await this.saver.appState; //TODO: do some UI loading
 
         ReactDOM.render(
             <Root
-                {...{ appState: this.appState, saveState: this.saveState }}
+                {...{
+                    appState,
+                    saveState: this.saver.saveState,
+                }}
             />,
             this.rootElement,
         );
 
+        /*
         this.firebaseApp = firebase.initializeApp({
             apiKey: 'AIzaSyB1UIYHsv3sl4pC8fPbkVghqBmfWdWwYDI',
             //authDomain: '<your-auth-domain>',
@@ -36,13 +45,6 @@ export class App {
         });
 
         const database = this.firebaseApp.database();
-
-        database.ref('documents/test').set({
-            text: 'test',
-        });
-
-        database.ref('documents/test').on('value', (event) => {
-            console.log(event);
-        });
+        */
     }
 }

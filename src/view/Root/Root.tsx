@@ -1,10 +1,10 @@
-import './Root.css';
 import * as React from 'react';
-import { observer } from 'mobx-react';
-import { Message } from '../Message/Message';
 import { IAppState } from '../../model/IAppState';
 import { IObservableObject } from 'mobx';
-import { ISaveState } from '../../controller/saver/ISaveState';
+import { ISaveState } from '../../controller/saver/00-ISaver';
+import { Message } from '../Message/Message';
+import { observer } from 'mobx-react';
+import './Root.css';
 
 interface IAppProps {
     appState: IAppState & IObservableObject;
