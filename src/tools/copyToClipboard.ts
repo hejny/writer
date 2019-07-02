@@ -1,5 +1,5 @@
 export function copyToClipboard(text: string) {
-    //todo refactor
+    // TODO: refactor
     const selBox = document.createElement('textarea');
     selBox.style.position = 'fixed';
     selBox.style.left = '0';

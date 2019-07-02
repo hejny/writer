@@ -1,5 +1,4 @@
 import { debounce } from 'lodash';
-import { IAppState } from '../../model/IAppState';
 import { IObservableObject, observable, observe } from 'mobx';
 import { ISaver, ISaveState } from './00-ISaver';
 
@@ -34,8 +33,8 @@ export class LocalStorageSaver<TAppState> implements ISaver<TAppState> {
                     `Error while trying to deserialize saved state - creating new state.`,
                 );
                 console.warn(error);
-                //todo backup
-                //todo migrations
+                // TODO: backup
+                // TODO: migrations
                 appState = createDefaultAppState();
             }
             resolve(observable(appState));

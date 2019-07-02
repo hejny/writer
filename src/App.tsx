@@ -20,9 +20,9 @@ export class App {
             LOCALSTORAGE_SAVE_KEY,
             createDefaultAppState,
         );
-        //TODO: Show the saving bar
+        // TODO:: Show the saving bar
 
-        const appState = await this.saver.appState; //TODO: do some UI loading
+        const appState = await this.saver.appState; // TODO:: do some UI loading
 
         ReactDOM.render(
             <Root

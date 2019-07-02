@@ -1,7 +1,7 @@
-//todo cache
-//todo transfer depend textarea
+// TODO: cache
+// TODO: transfer depend textarea
 export function measureContentHeight(
-    //todo element: HTMLElement,
+    // TODO: element: HTMLElement,
     contentHtml: string,
 ) {
     const testingElement = document.createElement('pre');

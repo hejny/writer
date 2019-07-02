@@ -1,44 +1,19 @@
 import { debounce } from 'lodash';
 import { IObservableObject, observable, observe } from 'mobx';
 import { ISaver, ISaveState } from './00-ISaver';
-import 'firebase/database';
 
-/*import * as firebase from 'firebase/app';
-
-export async function firebaseAppState(
-    firebaseDatabase: firebase.database.Database,
-    documentId: string,
-): Promise<IAppState & IObservableObject> {
-    /*
-    firebaseDatabase.ref('documents/test').set({
-        text: 'test',
+export class AbstractSaver<TAppState> implements ISaver<TAppState> {
+    saveState: ISaveState & IObservableObject = observable({
+        loaded: null,
+        updated: null,
+        saved: null,
     });
-
-    firebaseDatabase.ref('documents/test').on('value', (event) => {
-        console.log(event);
-    });
-    * /
-
-    return observable({ message: 'teeeeeeeeest' });
-}
-*/
-
-export class LocalStorageSaver<TAppState> implements ISaver<TAppState> {
-    saveState: ISaveState & IObservableObject;
     appState: Promise<TAppState & IObservableObject>;
 
-    constructor(
-        firebaseDatabase: firebase.database.Database,
-        documentId: string,
-        createDefaultAppState: () => TAppState,
+    hydrateAppStateHelper(
+        ...appStateProvider: (() => TAppState | Promise<TAppState>)[]
     ) {
-        this.saveState = observable({
-            loaded: null,
-            updated: null,
-            saved: null,
-        });
-
-        this.appState = new Promise((resolve) => {
+        return new Promise((resolve, reject) => {
             let appState: TAppState;
             try {
                 const appModelSerialized = localStorage.getItem(
@@ -61,7 +36,22 @@ export class LocalStorageSaver<TAppState> implements ISaver<TAppState> {
             }
             resolve(observable(appState));
         });
+    }
 
-        this.appState.then((appState) => {});
+    watchAppState(appStateSaver: (appState: TAppState) => Promise<void>) {
+        this.appState.then((appState) => {
+            this.saveState.loaded = new Date();
+            this.saveState.updated = this.saveState.loaded;
+            observe(
+                appState,
+                debounce(() => {
+                    localStorage.setItem(
+                        localStorageKey,
+                        JSON.stringify(appState),
+                    );
+                    this.saveState.saved = new Date();
+                }, 500),
+            );
+        });
     }
 }

@@ -1,10 +1,10 @@
-import './Message.css';
 import * as React from 'react';
-import { observer } from 'mobx-react';
+import { copyToClipboard } from 'src/tools/copyToClipboard';
 import { IAppState } from '../../model/IAppState';
 import { IObservableObject } from 'mobx';
-import { copyToClipboard } from 'src/tools/copyToClipboard';
 import { measureContentHeight } from 'src/tools/measureContentHeight';
+import { observer } from 'mobx-react';
+import './Message.css';
 
 interface IMessageProps {
     appState: IAppState & IObservableObject;
@@ -19,16 +19,16 @@ interface IMessage {
     };
 }
 
-//todo better name the compont, because Message is only a chunk not a whole text
+// TODO: better name the compont, because Message is only a chunk not a whole text
 export const Message = observer(({ appState }: IMessageProps) => {
-    //todo to some helper file,
-    //todo refresh on window resize
+    // TODO: to some helper file,
+    // TODO: refresh on window resize
     const charsOnRow = Math.floor(window.innerWidth / 15);
 
-    //todo #1 even better splitting by whole
+    // TODO: #1 even better splitting by whole
     const messages: IMessage[] = appState.message
         .split(/^(\-|\=){2,}.*$/gm)
-        .filter((text) => !/^(\-|\=)/.test(text)) //todo DRY
+        .filter((text) => !/^(\-|\=)/.test(text)) // TODO: DRY
         .map((text) => {
             return {
                 text,
@@ -44,8 +44,8 @@ export const Message = observer(({ appState }: IMessageProps) => {
             };
         });
 
-    //todo better stats
-    //todo stats in separate function
+    // TODO: better stats
+    // TODO: stats in separate function
     return (
         <div className="Message">
             <div className="rows">
@@ -67,7 +67,7 @@ export const Message = observer(({ appState }: IMessageProps) => {
                                     📋
                                 </button>
                                 {/*
-                                todo cut button (need to do #1 first)
+                                TODO: cut button (need to do #1 first)
                                 <button
                                     onClick={() =>{
                                         
