@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { copyToClipboard } from 'src/tools/copyToClipboard';
+import { copyToClipboard } from 'src/utils/copyToClipboard';
 import { IAppState } from '../../model/IAppState';
 import { IObservableObject } from 'mobx';
-import { measureContentHeight } from 'src/tools/measureContentHeight';
+import { measureContentHeight } from 'src/utils/measureContentHeight';
 import { observer } from 'mobx-react';
 import './Message.css';
 
