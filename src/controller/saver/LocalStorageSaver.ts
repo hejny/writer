@@ -1,58 +1,23 @@
-import { debounce } from 'lodash';
-import { IObservableObject, observable, observe } from 'mobx';
-import { ISaver, ISaveState } from './00-ISaver';
+import { AbstractSaver } from './AbstractSaver';
 
-export class LocalStorageSaver<TAppState> implements ISaver<TAppState> {
-    saveState: ISaveState & IObservableObject;
-    appState: Promise<TAppState & IObservableObject>;
-
+export class LocalStorageSaver<TAppState> extends AbstractSaver<TAppState> {
     constructor(
         localStorageKey: string,
         createDefaultAppState: () => TAppState,
     ) {
-        this.saveState = observable({
-            loaded: null,
-            updated: null,
-            saved: null,
-        });
-
-        this.appState = new Promise((resolve, reject) => {
-            let appState: TAppState;
-            try {
-                const appModelSerialized = localStorage.getItem(
-                    localStorageKey,
+        super();
+        // TODO: Is it here better to use super or this
+        super.hydrateAppStateHelper(() => {
+            const appModelSerialized = localStorage.getItem(localStorageKey);
+            if (!appModelSerialized) {
+                throw new Error(
+                    `In localStorage is not value ${localStorageKey}.`,
                 );
-                if (!appModelSerialized) {
-                    throw new Error(
-                        `In localStorage is not value ${localStorageKey}.`,
-                    );
-                }
-                appState = JSON.parse(appModelSerialized);
-            } catch (error) {
-                console.warn(
-                    `Error while trying to deserialize saved state - creating new state.`,
-                );
-                console.warn(error);
-                // TODO: backup
-                // TODO: migrations
-                appState = createDefaultAppState();
             }
-            resolve(observable(appState));
-        });
-
-        this.appState.then((appState) => {
-            this.saveState.loaded = new Date();
-            this.saveState.updated = this.saveState.loaded;
-            observe(
-                appState,
-                debounce(() => {
-                    localStorage.setItem(
-                        localStorageKey,
-                        JSON.stringify(appState),
-                    );
-                    this.saveState.saved = new Date();
-                }, 500),
-            );
+            return JSON.parse(appModelSerialized);
+        }, createDefaultAppState);
+        super.watchAppState((appState) => {
+            localStorage.setItem(localStorageKey, JSON.stringify(appState));
         });
     }
 }

@@ -1,7 +1,8 @@
 import { IObservableObject } from 'mobx';
 
 export interface ISaveState {
-    loaded: Date | null;
+    saving: boolean;
+    loading: boolean;
     updated: Date | null;
     saved: Date | null;
 }

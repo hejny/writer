@@ -2,53 +2,47 @@ import { debounce } from 'lodash';
 import { IObservableObject, observable, observe } from 'mobx';
 import { ISaver, ISaveState } from './00-ISaver';
 
+type Awaitable<T> = T | PromiseLike<T>; // TODO: Infuture this can be native see https://github.com/microsoft/TypeScript/issues/31394 if not rename it to Promisable
+
 export class AbstractSaver<TAppState> implements ISaver<TAppState> {
     saveState: ISaveState & IObservableObject = observable({
-        loaded: null,
+        saving: false,
+        loading: true,
         updated: null,
         saved: null,
     });
     appState: Promise<TAppState & IObservableObject>;
 
     hydrateAppStateHelper(
-        ...appStateProvider: (() => TAppState | Promise<TAppState>)[]
+        ...appStateProviders: (() => Awaitable<TAppState>)[]
     ) {
-        return new Promise((resolve, reject) => {
-            let appState: TAppState;
-            try {
-                const appModelSerialized = localStorage.getItem(
-                    localStorageKey,
-                );
-                if (!appModelSerialized) {
-                    throw new Error(
-                        `In localStorage is not value ${localStorageKey}.`,
+        this.appState = (async () => {
+            for (const appStateProvider of appStateProviders) {
+                try {
+                    const appState = await appStateProvider();
+                    if (appState) {
+                        return observable(appState);
+                    }
+                } catch (error) {
+                    console.warn(
+                        `Error while trying to deserialize saved state - creating new state.`,
                     );
                 }
-                appState = JSON.parse(appModelSerialized);
-            } catch (error) {
-                console.warn(
-                    `Error while trying to deserialize saved state - creating new state.`,
-                );
-                console.warn(error);
-                // TODO: backup
-                // TODO: migrations
-                appState = createDefaultAppState();
             }
-            resolve(observable(appState));
-        });
+            throw new Error(
+                `Any of appStateProviders don\`t provided appState.`,
+            );
+        })();
     }
 
-    watchAppState(appStateSaver: (appState: TAppState) => Promise<void>) {
+    watchAppState(appStateSaver: (appState: TAppState) => Awaitable<void>) {
         this.appState.then((appState) => {
-            this.saveState.loaded = new Date();
-            this.saveState.updated = this.saveState.loaded;
             observe(
                 appState,
-                debounce(() => {
-                    localStorage.setItem(
-                        localStorageKey,
-                        JSON.stringify(appState),
-                    );
+                debounce(async () => {
+                    this.saveState.saving = true;
+                    await appStateSaver(appState); // TODO: Handle errors
+                    this.saveState.saving = false;
                     this.saveState.saved = new Date();
                 }, 500),
             );
