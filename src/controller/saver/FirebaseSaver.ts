@@ -22,7 +22,7 @@ export class LocalStorageSaver<TAppState> extends AbstractSaver<TAppState> {
         }, createDefaultAppState);
         /*super.watchAppState((appState) => {
             localStorage.setItem(localStorageKey, JSON.stringify(appState));
-        });*/
+        });* /
     }
 }
 

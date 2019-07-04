@@ -13,11 +13,26 @@ export class AbstractSaver<TAppState> implements ISaver<TAppState> {
     });
     appState: Promise<TAppState & IObservableObject>;
 
-    hydrateAppStateHelper(
-        ...appStateProviders: (() => Awaitable<TAppState>)[]
-    ) {
+    appStateLoader(): Awaitable<TAppState> {
+        throw new Error(`"appStateLoader" should be overwritten.`);
+    }
+    appStateSaver(appState: TAppState): Awaitable<void> {
+        throw new Error(`"appStateSaver" should be overwritten.`);
+    }
+
+    constructor(private createDefaultAppState: () => Awaitable<TAppState>) {
+        this.hydrateAppStateHelper();
+        this.watchAppState();
+    }
+
+    private hydrateAppStateHelper() {
         this.appState = (async () => {
-            for (const appStateProvider of appStateProviders) {
+            // TODO: Wait here
+
+            for (const appStateProvider of [
+                this.appStateLoader.bind(this),
+                this.createDefaultAppState.bind(this),
+            ]) {
                 try {
                     const appState = await appStateProvider();
                     if (appState) {
@@ -25,7 +40,9 @@ export class AbstractSaver<TAppState> implements ISaver<TAppState> {
                     }
                 } catch (error) {
                     console.warn(
-                        `Error while trying to deserialize saved state - creating new state.`,
+                        `Error while trying to deserialize saved state - creating new state. \n ${
+                            error.message
+                        }`,
                     );
                 }
             }
@@ -35,13 +52,13 @@ export class AbstractSaver<TAppState> implements ISaver<TAppState> {
         })();
     }
 
-    watchAppState(appStateSaver: (appState: TAppState) => Awaitable<void>) {
+    private watchAppState() {
         this.appState.then((appState) => {
             observe(
                 appState,
                 debounce(async () => {
                     this.saveState.saving = true;
-                    await appStateSaver(appState); // TODO: Handle errors
+                    await this.appStateSaver(appState); // TODO: Handle errors
                     this.saveState.saving = false;
                     this.saveState.saved = new Date();
                 }, 500),

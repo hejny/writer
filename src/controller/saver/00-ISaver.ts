@@ -8,6 +8,6 @@ export interface ISaveState {
 }
 
 export interface ISaver<TAppState> {
-    saveState: ISaveState & IObservableObject;
+    saveState: ISaveState & IObservableObject; // TODO: This should have a better name
     appState: Promise<TAppState & IObservableObject>;
 }
