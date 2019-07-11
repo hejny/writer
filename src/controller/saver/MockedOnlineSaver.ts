@@ -1,7 +1,12 @@
-/*
+import { Observable } from 'rxjs/Observable';
 import { AbstractSaver } from './AbstractSaver';
+import { Observer } from 'rxjs/Observer';
+import { forTime } from 'waitasecond';
+import { IAppState } from 'src/model/IAppState';
 
-export class MockedOnlineSaver<TAppState> extends AbstractSaver<TAppState> {
+export class MockedOnlineSaver<
+    TAppState extends IAppState
+> extends AbstractSaver<TAppState> {
     constructor(
         private localStorageKey: string,
         createDefaultAppState: () => TAppState, // FIXME: DRY
@@ -9,7 +14,7 @@ export class MockedOnlineSaver<TAppState> extends AbstractSaver<TAppState> {
         super(createDefaultAppState);
     }
 
-    appStateLoader(newState) {
+    appStateLoader(): Observable<TAppState> {
         // FIXME: Why return type is not from inhereted class AbstractSaver
 
         console.log(this, this.localStorageKey);
@@ -20,7 +25,17 @@ export class MockedOnlineSaver<TAppState> extends AbstractSaver<TAppState> {
                 `In localStorage is not value ${this.localStorageKey}.`,
             );
         }
-        return JSON.parse(appModelSerialized);
+
+        const appModel = JSON.parse(appModelSerialized) as TAppState;
+        return Observable.create(async (observer: Observer<TAppState>) => {
+            console.log('Create observable');
+            while (true) {
+                observer.next(appModel);
+                await forTime(2500);
+
+                appModel.message += `\ntest`;
+            }
+        });
     }
 
     appStateSaver(appState: TAppState) {
@@ -28,4 +43,3 @@ export class MockedOnlineSaver<TAppState> extends AbstractSaver<TAppState> {
         localStorage.setItem(this.localStorageKey, JSON.stringify(appState));
     }
 }
-*/

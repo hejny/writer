@@ -8,6 +8,7 @@ import { LOCALSTORAGE_SAVE_KEY } from './config';
 import { LocalStorageSaver } from './controller/saver/LocalStorageSaver';
 import { Root } from './view/Root/Root';
 import 'firebase/database';
+import { MockedOnlineSaver } from './controller/saver/MockedOnlineSaver';
 
 export class App {
     private saver: ISaver<IAppState>;
@@ -16,7 +17,7 @@ export class App {
     constructor(private rootElement: HTMLDivElement) {}
 
     async run() {
-        this.saver = new LocalStorageSaver(
+        this.saver = new MockedOnlineSaver(
             LOCALSTORAGE_SAVE_KEY,
             createDefaultAppState,
         );

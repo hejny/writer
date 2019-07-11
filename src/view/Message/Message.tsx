@@ -5,6 +5,7 @@ import { IObservableObject } from 'mobx';
 import { measureContentHeight } from 'src/utils/measureContentHeight';
 import { observer } from 'mobx-react';
 import './Message.css';
+import { forImmediate } from 'waitasecond';
 
 interface IMessageProps {
     appState: IAppState & IObservableObject;
@@ -43,6 +44,12 @@ export const Message = observer(({ appState }: IMessageProps) => {
                 },
             };
         });
+
+    (async () => {
+        await forImmediate();
+        (document.querySelector('#writing-area') as HTMLTextAreaElement).value =
+            appState.message;
+    })();
 
     // TODO: better stats
     // TODO: stats in separate function

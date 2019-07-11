@@ -34,22 +34,18 @@ export class AbstractSaver<TAppState> implements ISaver<TAppState> {
     private hydrateAppStateHelper() {
         this.appState = (async () => {
             await forImmediate();
+            const appState = observable(await this.createDefaultAppState());
 
-            try {
-                this.appStateLoaderObservable = this.appStateLoader().share();
-
-                const appState = await this.appStateLoaderObservable
-                    .first()
-                    .toPromise();
-                if (appState) {
-                    return observable(appState);
+            this.appStateLoader().subscribe((newAppState) => {
+                console.log(newAppState);
+                // TODO: to function
+                for (const key of Object.keys(newAppState)) {
+                    appState[key] = newAppState[key];
                 }
+            });
 
-                throw new Error();
-            } catch (error) {
-                return await this.createDefaultAppState();
-            }
-        })().then((appState) => observable(appState));
+            return appState;
+        })();
     }
 
     private watchAppState() {
@@ -57,6 +53,8 @@ export class AbstractSaver<TAppState> implements ISaver<TAppState> {
             observe(
                 appState,
                 debounce(async () => {
+                    console.log('saving');
+
                     this.saveState.saving = true;
                     await this.appStateSaver(appState); // TODO: Handle errors
                     this.saveState.saving = false;
