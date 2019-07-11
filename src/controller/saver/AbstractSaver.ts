@@ -1,5 +1,9 @@
 import { debounce } from 'lodash';
 import { IObservableObject, observable, observe } from 'mobx';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/share';
+import 'rxjs/add/operator/first';
+import { forImmediate } from 'waitasecond';
 import { ISaver, ISaveState } from './00-ISaver';
 
 type Awaitable<T> = T | PromiseLike<T>; // TODO: Infuture this can be native see https://github.com/microsoft/TypeScript/issues/31394 if not rename it to Promisable
@@ -13,7 +17,9 @@ export class AbstractSaver<TAppState> implements ISaver<TAppState> {
     });
     appState: Promise<TAppState & IObservableObject>;
 
-    appStateLoader(): Awaitable<TAppState> {
+    private appStateLoaderObservable: Observable<TAppState>;
+
+    appStateLoader(): Observable<TAppState> {
         throw new Error(`"appStateLoader" should be overwritten.`);
     }
     appStateSaver(appState: TAppState): Awaitable<void> {
@@ -27,29 +33,23 @@ export class AbstractSaver<TAppState> implements ISaver<TAppState> {
 
     private hydrateAppStateHelper() {
         this.appState = (async () => {
-            // TODO: Wait here
+            await forImmediate();
 
-            for (const appStateProvider of [
-                this.appStateLoader.bind(this),
-                this.createDefaultAppState.bind(this),
-            ]) {
-                try {
-                    const appState = await appStateProvider();
-                    if (appState) {
-                        return observable(appState);
-                    }
-                } catch (error) {
-                    console.warn(
-                        `Error while trying to deserialize saved state - creating new state. \n ${
-                            error.message
-                        }`,
-                    );
+            try {
+                this.appStateLoaderObservable = this.appStateLoader().share();
+
+                const appState = await this.appStateLoaderObservable
+                    .first()
+                    .toPromise();
+                if (appState) {
+                    return observable(appState);
                 }
+
+                throw new Error();
+            } catch (error) {
+                return await this.createDefaultAppState();
             }
-            throw new Error(
-                `Any of appStateProviders don\`t provided appState.`,
-            );
-        })();
+        })().then((appState) => observable(appState));
     }
 
     private watchAppState() {

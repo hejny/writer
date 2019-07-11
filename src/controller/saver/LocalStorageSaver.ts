@@ -1,4 +1,6 @@
+import { Observable } from 'rxjs/Observable';
 import { AbstractSaver } from './AbstractSaver';
+import { Observer } from 'rxjs/Observer';
 
 export class LocalStorageSaver<TAppState> extends AbstractSaver<TAppState> {
     constructor(
@@ -8,7 +10,7 @@ export class LocalStorageSaver<TAppState> extends AbstractSaver<TAppState> {
         super(createDefaultAppState);
     }
 
-    appStateLoader() {
+    appStateLoader(): Observable<TAppState> {
         // FIXME: Why return type is not from inhereted class AbstractSaver
 
         console.log(this, this.localStorageKey);
@@ -19,7 +21,11 @@ export class LocalStorageSaver<TAppState> extends AbstractSaver<TAppState> {
                 `In localStorage is not value ${this.localStorageKey}.`,
             );
         }
-        return JSON.parse(appModelSerialized);
+
+        const appModel = JSON.parse(appModelSerialized) as TAppState;
+        return Observable.create((observer: Observer<TAppState>) => {
+            observer.next(appModel);
+        });
     }
 
     appStateSaver(appState: TAppState) {

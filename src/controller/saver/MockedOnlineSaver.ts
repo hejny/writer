@@ -1,3 +1,4 @@
+/*
 import { AbstractSaver } from './AbstractSaver';
 
 export class MockedOnlineSaver<TAppState> extends AbstractSaver<TAppState> {
@@ -27,3 +28,4 @@ export class MockedOnlineSaver<TAppState> extends AbstractSaver<TAppState> {
         localStorage.setItem(this.localStorageKey, JSON.stringify(appState));
     }
 }
+*/
