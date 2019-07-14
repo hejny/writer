@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { copyToClipboard } from 'src/utils/copyToClipboard';
+import { forImmediate } from 'waitasecond';
 import { IAppState } from '../../model/IAppState';
 import { IObservableObject } from 'mobx';
 import { measureContentHeight } from 'src/utils/measureContentHeight';
 import { observer } from 'mobx-react';
 import './Message.css';
-import { forImmediate } from 'waitasecond';
 
 interface IMessageProps {
     appState: IAppState & IObservableObject;
@@ -44,6 +44,8 @@ export const Message = observer(({ appState }: IMessageProps) => {
                 },
             };
         });
+
+    document.title = `${messages[0].text.trim()} 🖋 Simple writer`;
 
     (async () => {
         await forImmediate();
@@ -96,7 +98,6 @@ export const Message = observer(({ appState }: IMessageProps) => {
             <textarea
                 id="writing-area"
                 rows={messages.reduce((agg, m) => m.stat.lines + agg, 0) + 5}
-                defaultValue={appState.message}
                 onChange={(event) => (appState.message = event.target.value)}
             />
         </div>
