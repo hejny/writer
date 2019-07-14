@@ -1,47 +1,36 @@
-/*
-
-import 'firebase/database';
 import { AbstractSaver } from './AbstractSaver';
+import { forTime } from 'waitasecond';
+import { IAppState } from 'src/model/IAppState';
+import { Observable } from 'rxjs/Observable';
+import { Observer } from 'rxjs/Observer';
+import 'firebase/database';
 
-export class LocalStorageSaver<TAppState> extends AbstractSaver<TAppState> {
+export class FirebaseSaver<TAppState extends IAppState> extends AbstractSaver<
+    TAppState
+> {
     constructor(
-        firebaseDatabase: firebase.database.Database,
-        documentId: string,
-        createDefaultAppState: () => TAppState,
+        private firebaseDatabase: firebase.database.Database,
+        private documentKey: string,
+        createDefaultAppState: () => TAppState, // FIXME: DRY
     ) {
-        super();
-        // TODO: Is it here better to use super or this
-        super.hydrateAppStateHelper(() => {
-            const appModelSerialized = localStorage.getItem(localStorageKey);
-            if (!appModelSerialized) {
-                throw new Error(
-                    `In localStorage is not value ${localStorageKey}.`,
-                );
-            }
-            return JSON.parse(appModelSerialized);
-        }, createDefaultAppState);
-        /*super.watchAppState((appState) => {
-            localStorage.setItem(localStorageKey, JSON.stringify(appState));
-        });* /
+        // TODO: Test documentKey
+        super(createDefaultAppState);
+    }
+
+    appStateLoader(): Observable<TAppState> {
+        return Observable.create(async (observer: Observer<TAppState>) => {
+            this.firebaseDatabase
+                .ref(`documents/${this.documentKey}`)
+                .on('value', (snapshot) => {
+                    if (!snapshot.val()) return;
+                    observer.next(snapshot.val().appState);
+                });
+        });
+    }
+
+    appStateSaver(appState: TAppState) {
+        this.firebaseDatabase.ref(`documents/${this.documentKey}`).set({
+            appState,
+        });
     }
 }
-
-/*import * as firebase from 'firebase/app';
-
-export async function firebaseAppState(
-    firebaseDatabase: firebase.database.Database,
-    documentId: string,
-): Promise<IAppState & IObservableObject> {
-    /*
-    firebaseDatabase.ref('documents/test').set({
-        text: 'test',
-    });
-
-    firebaseDatabase.ref('documents/test').on('value', (event) => {
-        console.log(event);
-    });
-    * /
-
-    return observable({ message: 'teeeeeeeeest' });
-}
-*/

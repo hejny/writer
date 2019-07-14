@@ -1,14 +1,16 @@
 import * as firebase from 'firebase/app';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import * as uuid from 'uuid';
 import { createDefaultAppState } from './model/createDefaultAppState';
+import { FirebaseSaver } from './controller/saver/FirebaseSaver';
 import { IAppState } from './model/IAppState';
 import { ISaver } from './controller/saver/00-ISaver';
 import { LOCALSTORAGE_SAVE_KEY } from './config';
 import { LocalStorageSaver } from './controller/saver/LocalStorageSaver';
+import { MockedOnlineSaver } from './controller/saver/MockedOnlineSaver';
 import { Root } from './view/Root/Root';
 import 'firebase/database';
-import { MockedOnlineSaver } from './controller/saver/MockedOnlineSaver';
 
 export class App {
     private saver: ISaver<IAppState>;
@@ -17,9 +19,26 @@ export class App {
     constructor(private rootElement: HTMLDivElement) {}
 
     async run() {
-        this.saver = new MockedOnlineSaver(
-            LOCALSTORAGE_SAVE_KEY,
-            createDefaultAppState,
+        const documentKey = location.pathname.split('/').filter((x) => x)[0];
+
+        if (!documentKey) {
+            location.pathname = `/${uuid.v4()}`;
+        }
+
+        this.firebaseApp = firebase.initializeApp({
+            apiKey: 'AIzaSyB1UIYHsv3sl4pC8fPbkVghqBmfWdWwYDI',
+            //authDomain: '<your-auth-domain>',
+            databaseURL: 'https://writer-42b9d.firebaseio.com/',
+            projectId: 'writer-42b9d',
+            //storageBucket: '<your-storage-bucket>',
+            //messagingSenderId: '<your-sender-id>',
+        });
+        const database = this.firebaseApp.database();
+
+        this.saver = new FirebaseSaver(
+            database,
+            documentKey,
+            createDefaultAppState(documentKey),
         );
         // TODO:: Show the saving bar
 
@@ -36,16 +55,9 @@ export class App {
         );
 
         /*
-        this.firebaseApp = firebase.initializeApp({
-            apiKey: 'AIzaSyB1UIYHsv3sl4pC8fPbkVghqBmfWdWwYDI',
-            //authDomain: '<your-auth-domain>',
-            databaseURL: 'https://writer-42b9d.firebaseio.com/',
-            projectId: 'writer-42b9d',
-            //storageBucket: '<your-storage-bucket>',
-            //messagingSenderId: '<your-sender-id>',
-        });
+        
 
-        const database = this.firebaseApp.database();
+        
         */
     }
 }

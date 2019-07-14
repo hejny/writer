@@ -1,3 +1,4 @@
+/*
 export class VersionableObject<T> {
     static from<T>(state: T): T & VersionableObject<T> {
         // FIXME: can this be without "as"
@@ -12,3 +13,4 @@ export class VersionableObject<T> {
 
     merge(versionable: VersionableObject<T>): this {}
 }
+*/

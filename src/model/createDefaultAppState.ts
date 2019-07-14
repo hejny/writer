@@ -1,15 +1,19 @@
 import { IAppState } from './IAppState';
 
-export function createDefaultAppState(): IAppState {
-    return {
+export function createDefaultAppState(documentKey: string): () => IAppState {
+    return () => ({
         message: `
+
+Document ${documentKey}
+
+---
 
 Welcome to 🖋 Simple writer!
 
 ---
 
-It is just <textarea> saved to LocalStorage.
+It is just a <textarea> saved to Firebase.
 
-`,
-    };
+`.trim(),
+    });
 }

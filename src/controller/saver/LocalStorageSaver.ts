@@ -1,5 +1,5 @@
-import { Observable } from 'rxjs/Observable';
 import { AbstractSaver } from './AbstractSaver';
+import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
 
 export class LocalStorageSaver<TAppState> extends AbstractSaver<TAppState> {
