@@ -37,7 +37,7 @@ export class AbstractSaver<TAppState> implements ISaver<TAppState> {
             const appState = observable(await this.createDefaultAppState());
 
             this.appStateLoader().subscribe((newAppState) => {
-                console.log(newAppState);
+                //console.log(newAppState);
                 // TODO: to function
                 for (const key of Object.keys(newAppState)) {
                     appState[key] = newAppState[key];
