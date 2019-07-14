@@ -19,11 +19,16 @@ export class App {
     constructor(private rootElement: HTMLDivElement) {}
 
     async run() {
-        const documentKey = location.pathname.split('/').filter((x) => x)[0];
+        const documentKey = location.hash
+            .substr(1)
+            .split('/')
+            .filter((x) => x)[0];
 
         if (!documentKey) {
-            location.pathname = `/${uuid.v4()}`;
+            location.hash = `/${uuid.v4()}`;
         }
+
+        console.log(`Inicializing app with key "${documentKey}".`);
 
         this.firebaseApp = firebase.initializeApp({
             apiKey: 'AIzaSyB1UIYHsv3sl4pC8fPbkVghqBmfWdWwYDI',
