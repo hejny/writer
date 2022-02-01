@@ -4,7 +4,6 @@
 
  [![Package Quality](https://packagequality.com/shield/writer.svg)](https://packagequality.com/#?package=writer)
  [![License](https://img.shields.io/github/license/hejny/writer.svg?style=flat)](https://raw.githubusercontent.com/hejny/writer/master/LICENSE)
- [![NPM Version](https://badge.fury.io/js/@hejny%2Fwriter.svg)](https://www.npmjs.com/package/@hejny/writer)
  [![Known Vulnerabilities](https://snyk.io/test/github/hejny/writer/badge.svg)](https://snyk.io/test/github/hejny/writer)
  [![Issues](https://img.shields.io/github/issues/hejny/writer.svg?style=flat)](https://github.com/hejny/writer/issues)
 
