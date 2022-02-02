@@ -1,4 +1,4 @@
-# Simple writer
+# 🧻 Simple writer
 
 <!--Badges-->
 
