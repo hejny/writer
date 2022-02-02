@@ -13,30 +13,30 @@
     "prettier-watch": "onchange \"{src,scripts}/**/*.{ts,tsx,js}\" -- prettier --config .prettierrc --write {{changed}}"
   },
   "dependencies": {
-    "@types/downloadjs": "^1.4.0",
-    "@types/lodash": "^4.14.116",
-    "@types/uuid": "^3.4.3",
-    "configchecker": "^0.5.0",
-    "downloadjs": "^1.4.7",
-    "firebase": "^6.2.3",
-    "lodash": "^4.17.21",
-    "mobx": "^5.0.4",
-    "mobx-react": "^5.2.5",
-    "react": "^16.4.2",
-    "react-dom": "^16.4.2",
+    "@types/downloadjs": "1.4.0",
+    "@types/lodash": "4.14.116",
+    "@types/uuid": "3.4.3",
+    "configchecker": "0.5.0",
+    "downloadjs": "1.4.7",
+    "firebase": "6.2.3",
+    "lodash": "4.17.21",
+    "mobx": "5.0.4",
+    "mobx-react": "5.2.5",
+    "react": "16.4.2",
+    "react-dom": "16.4.2",
     "react-scripts-ts": "2.17.0",
-    "rxjs": "^5.5.5",
-    "uuid": "^3.3.2",
-    "waitasecond": "^0.1.5"
+    "rxjs": "5.5.5",
+    "uuid": "3.3.2",
+    "waitasecond": "0.1.5"
   },
   "devDependencies": {
-    "@types/jest": "^23.3.1",
-    "@types/node": "^10.7.1",
-    "@types/react": "^16.4.11",
-    "@types/react-dom": "^16.0.7",
-    "gh-pages": "^1.1.0",
-    "prettier": "^1.12.1",
-    "onchange": "^4.1.0",
-    "typescript": "^3.0.1"
+    "@types/jest": "23.3.1",
+    "@types/node": "10.7.1",
+    "@types/react": "16.4.11",
+    "@types/react-dom": "16.0.7",
+    "gh-pages": "1.1.0",
+    "prettier": "1.12.1",
+    "onchange": "4.1.0",
+    "typescript": "3.0.1"
   }
 }
