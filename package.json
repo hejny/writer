@@ -38,5 +38,6 @@
     "prettier": "1.12.1",
     "onchange": "4.1.0",
     "typescript": "3.0.1"
-  }
+  },
+  "license": "SEE LICENSE IN LICENSE"
 }
