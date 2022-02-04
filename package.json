@@ -39,5 +39,6 @@
     "onchange": "4.1.0",
     "typescript": "3.0.1"
   },
-  "license": "SEE LICENSE IN LICENSE"
+  "license": "SEE LICENSE IN LICENSE",
+  "description": "Simple batch writer for messages on all platforms."
 }
