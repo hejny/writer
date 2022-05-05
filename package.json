@@ -40,5 +40,9 @@
     "typescript": "3.0.1"
   },
   "license": "SEE LICENSE IN LICENSE",
-  "description": "Simple batch writer for messages on all platforms."
+  "description": "Simple batch writer for messages on all platforms.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hejny/writer"
+  }
 }
