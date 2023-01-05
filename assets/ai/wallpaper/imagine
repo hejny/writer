@@ -2,3 +2,4 @@
 #       And every first line will be searched during the harvesting phase
 
 Simple batch writer for messages on all platforms.
+--version 4
